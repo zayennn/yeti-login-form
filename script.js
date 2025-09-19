@@ -11,6 +11,7 @@ function calculateFaceMove(e) {
 		caretCoords = {}
 	;
 	if(carPos == null || carPos == 0) {
+		carPos = email.value.length;
 	}
 	[].forEach.call(copyStyle, function(prop){
 		div.style[prop] = copyStyle[prop];
@@ -120,6 +121,8 @@ function onEmailInput(e) {
 function onEmailFocus(e) {
 	activeElement = "email";
 	e.target.parentElement.classList.add("focusWithText");
+	stopBlinking();
+	calculateFaceMove();
 	onEmailInput();
 }
 
@@ -131,6 +134,7 @@ function onEmailBlur(e) {
 			if(e.target.value == "") {
 				e.target.parentElement.classList.remove("focusWithText");
 			}
+			startBlinking();
 			resetFace();
 		}
 	}, 100);
@@ -284,6 +288,7 @@ function getPosition(el) {
 
 		el = el.offsetParent;
 	}
+	// console.log("xPos: " + xPos + ", yPos: " + yPos);
 	return {
 		x: xPos,
 		y: yPos
@@ -312,7 +317,7 @@ function initLoginForm() {
 	
 	password.addEventListener('focus', onPasswordFocus);
 	password.addEventListener('blur', onPasswordBlur);
-	//passwordLabel.addEventListener('click', onPasswordLabelClick);
+	passwordLabel.addEventListener('click', onPasswordLabelClick);
 	
 	showPasswordCheck.addEventListener('change', onPasswordToggleChange);
 	showPasswordCheck.addEventListener('focus', onPasswordToggleFocus);
@@ -326,7 +331,6 @@ function initLoginForm() {
 	
 	TweenMax.set(mouth, {transformOrigin: "center center"});
 	
-	// activate blinking
 	startBlinking(5);
 	
 	emailScrollMax = email.scrollWidth;
